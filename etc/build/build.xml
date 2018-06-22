@@ -317,6 +317,9 @@
 				<file name="GitHubFile.js" />
 				<file name="GitHubLibrary.js" />
 				<file name="GitHubClient.js" />
+				<file name="GitHubEnterpriseFile.js" />
+				<file name="GitHubEnterpriseLibrary.js" />
+				<file name="GitHubEnterpriseClient.js" />
 				<file name="TrelloFile.js" />
 				<file name="TrelloLibrary.js" />
 				<file name="TrelloClient.js" />

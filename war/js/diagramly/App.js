@@ -144,6 +144,8 @@ App.MODE_ONEDRIVE = 'onedrive';
  */
 App.MODE_GITHUB = 'github';
 
+App.MODE_GITHUBENTERPRISE = 'ghe';
+
 /**
  * Sets the delay for autosave in milliseconds. Default is 2000.
  */
@@ -771,14 +773,37 @@ App.prototype.init = function()
 	/**
 	 * Creates github client.
 	 */
+	/*
 	this.gitHub = (!mxClient.IS_IE || document.documentMode == 10 ||
 			mxClient.IS_IE11 || mxClient.IS_EDGE) &&
 			(urlParams['gh'] != '0' && (urlParams['embed'] != '1' ||
 			urlParams['gh'] == '1')) ? new GitHubClient(this) : null;
+	*/
+	if (this.gitHub != null)
+	{
+		this.gitHub.addListener('userChanged', mxUtils.bind(this, function()
+		{
+			this.updateUserElement();
+			this.restoreLibraries();
+		}))
+	}
+
+	this.gitHubEnterprise = (!mxClient.IS_IE || document.documentMode == 10 ||
+			mxClient.IS_IE11 || mxClient.IS_EDGE) &&
+			(urlParams['ghe'] != '0' && (urlParams['embed'] != '1' ||
+			urlParams['ghe'] == '1')) ? new GitHubEnterpriseClient(this) : null;
 	
 	if (this.gitHub != null)
 	{
 		this.gitHub.addListener('userChanged', mxUtils.bind(this, function()
+		{
+			this.updateUserElement();
+			this.restoreLibraries();
+		}))
+	}
+	if (this.gitHubEnterprise != null)
+	{
+		this.gitHubEnterprise.addListener('userChanged', mxUtils.bind(this, function()
 		{
 			this.updateUserElement();
 			this.restoreLibraries();
@@ -1743,6 +1768,17 @@ App.prototype.appIconClicked = function(evt)
 			else
 			{
 				this.openLink('https://github.com/');
+			}
+		}
+		else if (mode == App.MODE_GITHUBENTERPRISE)
+		{
+			if (file != null && file.constructor == GitHubEnterpriseFile)
+			{
+				this.openLink(file.meta.html_url);
+			}
+			else
+			{
+				this.openLink('https://git.realestate.com.au/');
 			}
 		}
 	}
@@ -3038,6 +3074,10 @@ App.prototype.getPeerForMode = function(mode)
 	{
 		return this.gitHub;
 	}
+	else if (mode == App.MODE_GITHUBENTERPRISE)
+	{
+		return this.gitHubEnterprise;
+	}
 	else if (mode == App.MODE_DROPBOX)
 	{
 		return this.dropbox;
@@ -3104,6 +3144,17 @@ App.prototype.createFile = function(title, data, libs, mode, done, replace, fold
 			this.pickFolder(mode, mxUtils.bind(this, function(folderId)
 			{
 				this.gitHub.insertFile(title, data, mxUtils.bind(this, function(file)
+				{
+					complete();
+					this.fileCreated(file, libs, replace, done);
+				}), error, false, folderId);
+			}));
+		}
+		else if (mode == App.MODE_GITHUBENTERPRISE && this.gitHubEnterprise != null)
+		{
+			this.pickFolder(mode, mxUtils.bind(this, function(folderId)
+			{
+				this.gitHubEnterprise.insertFile(title, data, mxUtils.bind(this, function(file)
 				{
 					complete();
 					this.fileCreated(file, libs, replace, done);
@@ -3502,6 +3553,10 @@ App.prototype.loadFile = function(id, sameWindow, file)
 				{
 					peer = this.gitHub;
 				}
+				else if (id.charAt(0) == 'E')
+				{
+					peer = this.gitHubEnterprise;
+				}
 				else if (id.charAt(0) == 'T')
 				{
 					peer = this.trello;
@@ -3607,6 +3662,10 @@ App.prototype.getLibraryStorageHint = function(file)
 	else if (file.constructor == GitHubLibrary)
 	{
 		tip += ' (' + mxResources.get('github') + ')';
+	}
+	else if (file.constructor == GitHubEnterpriseLibrary)
+	{
+		tip += ' (' + mxResources.get('githubenterprise') + ')';
 	}
 	else if (file.constructor == TrelloLibrary)
 	{
@@ -3752,6 +3811,13 @@ App.prototype.restoreLibraries = function()
 									if (this.gitHub != null && this.gitHub.getUser() != null)
 									{
 										peer = this.gitHub;
+									}
+								}
+								else if (service == 'E')
+								{
+									if (this.gitHubEnterprise != null && this.gitHubEnterprise.getUser() != null)
+									{
+										peer = this.gitHubEnterprise;
 									}
 								}
 								else if (service == 'T')
@@ -3981,6 +4047,14 @@ App.prototype.pickFolder = function(mode, fn, enabled)
 			fn(folderPath);
 		}));
 	}
+	else if (enabled && mode == App.MODE_GITHUBENTERPRISE && this.gitHubEnterprise != null)
+	{
+		this.gitHubEnterprise.pickFolder(mxUtils.bind(this, function(folderPath)
+		{
+			resume();
+			fn(folderPath);
+		}));
+	}
 	else if (enabled && mode == App.MODE_TRELLO && this.trello != null)
 	{
 		this.trello.pickFolder(mxUtils.bind(this, function(cardId)
@@ -4079,6 +4153,21 @@ App.prototype.exportFile = function(data, filename, mimeType, base64Encoded, mod
 		{
 			// Must insert file as library to force the file to be written
 			this.gitHub.insertFile(filename, data, mxUtils.bind(this, function()
+			{
+				this.spinner.stop();
+			}), mxUtils.bind(this, function(resp)
+			{
+				this.spinner.stop();
+				this.handleError(resp);
+			}), true, folderId, base64Encoded);
+		}
+	}
+	else if (mode == App.MODE_GITHUBENTERPRISE)
+	{
+		if (this.gitHubEnterprise != null && this.spinner.spin(document.body, mxResources.get('saving')))
+		{
+			// Must insert file as library to force the file to be written
+			this.gitHubEnterprise.insertFile(filename, data, mxUtils.bind(this, function()
 			{
 				this.spinner.stop();
 			}), mxUtils.bind(this, function(resp)
@@ -4449,6 +4538,10 @@ App.prototype.updateHeader = function()
 					this.appIcon.style.backgroundImage = 'url(' + IMAGE_PATH + '/onedrive-logo-white.svg)';
 				}
 				else if (mode == App.MODE_GITHUB)
+				{
+					this.appIcon.style.backgroundImage = 'url(' + IMAGE_PATH + '/github-logo-white.svg)';
+				}
+				else if (mode == App.MODE_GITHUBENTERPRISE)
 				{
 					this.appIcon.style.backgroundImage = 'url(' + IMAGE_PATH + '/github-logo-white.svg)';
 				}
@@ -4961,6 +5054,37 @@ App.prototype.updateUserElement = function()
 							else
 							{
 								this.gitHub.logout();
+							}
+						}));
+					}
+					
+					if (this.gitHubEnterprise != null)
+					{
+						addUser(this.gitHubEnterprise.getUser(), IMAGE_PATH + '/github-logo-rea.png', mxUtils.bind(this, function()
+						{
+							var file = this.getCurrentFile();
+
+							if (file != null && file.constructor == GitHubEnterpriseFile)
+							{
+								var doLogout = mxUtils.bind(this, function()
+								{
+									this.gitHubEnterprise.logout();
+									window.location.hash = '';
+								});
+								
+								if (!file.isModified())
+								{
+									doLogout();
+								}
+								else
+								{
+									this.confirm(mxResources.get('allChangesLost'), null, doLogout,
+										mxResources.get('cancel'), mxResources.get('discardChanges'));
+								}
+							}
+							else
+							{
+								this.gitHubEnterprise.logout();
 							}
 						}));
 					}

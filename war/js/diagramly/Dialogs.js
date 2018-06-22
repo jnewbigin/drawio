@@ -296,6 +296,11 @@ var StorageDialog = function(editorUi, fn, rowLimit)
 	{
 		addLogo(IMAGE_PATH + '/github-logo.svg', mxResources.get('github'), App.MODE_GITHUB, 'gitHub');
 	}
+
+	if (editorUi.gitHubEnterprise != null)
+	{
+		addLogo(IMAGE_PATH + '/github-logo.svg', mxResources.get('githubenterprise'), App.MODE_GITHUBENTERPRISE, 'gitHubEnterprise');
+	}
 	
 	if (isLocalStorage && (urlParams['browser'] == '1' || urlParams['offline'] == '1'))
 	{
@@ -526,6 +531,11 @@ var SplashDialog = function(editorUi)
 		logo.src = IMAGE_PATH + '/github-logo.svg';
 		service = mxResources.get('github');
 	}
+	else if (editorUi.mode == App.MODE_GITHUBENTERPRISE)
+	{
+		logo.src = IMAGE_PATH + '/github-logo-rea.png';
+		service = mxResources.get('githubenterprise');
+	}
 	else if (editorUi.mode == App.MODE_TRELLO)
 	{
 		logo.src = IMAGE_PATH + '/trello-logo.svg';
@@ -631,6 +641,10 @@ var SplashDialog = function(editorUi)
 	{
 		storage = mxResources.get('github');
 	}
+	else if (editorUi.mode == App.MODE_GITHUBENTERPRISE)
+	{
+		storage = mxResources.get('githubenterprise');
+	}
 	else if (editorUi.mode == App.MODE_TRELLO)
 	{
 		storage = mxResources.get('trello');
@@ -729,6 +743,14 @@ var SplashDialog = function(editorUi)
 			{
 				editorUi.gitHub.logout();
 				editorUi.openLink('https://www.github.com/logout');
+			});
+		}
+		else if (editorUi.mode == App.MODE_GITHUBENTERPRISE && editorUi.gitHubEnterprise != null)
+		{
+			addLogout(function()
+			{
+				editorUi.gitHub.logout();
+				editorUi.openLink('https://git.realestate.com.au/logout');
 			});
 		}
 		else if (editorUi.mode == App.MODE_TRELLO && editorUi.trello != null)
@@ -2578,6 +2600,10 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 	{
 		logo.src = IMAGE_PATH + '/github-logo.svg';
 	}
+	else if (editorUi.mode == App.MODE_GITHUBENTERPRISE)
+	{
+		logo.src = IMAGE_PATH + '/github-logo-rea.png';
+	}
 	else if (editorUi.mode == App.MODE_TRELLO)
 	{
 		logo.src = IMAGE_PATH + '/trello-logo.svg';
@@ -2619,6 +2645,10 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 	else if (editorUi.mode == App.MODE_GITHUB && editorUi.gitHub != null)
 	{
 		ext = editorUi.gitHub.extension;
+	}
+	else if (editorUi.mode == App.MODE_GITHUBENTERPRISE && editorUi.gitHubEnterprise != null)
+	{
+		ext = editorUi.gitHubEnterprise.extension;
 	}
 	else if (editorUi.mode == App.MODE_TRELLO && editorUi.trello != null)
 	{
@@ -3249,6 +3279,16 @@ var CreateDialog = function(editorUi, title, createFn, cancelFn, dlgTitle, btnLa
 			addLogo(IMAGE_PATH + '/github-logo.svg', mxResources.get('github'), App.MODE_GITHUB, 'gitHub');
 		}
 
+		if (editorUi.gitHubEnterprise != null)
+		{
+			var gitHubOption = document.createElement('option');
+			gitHubOption.setAttribute('value', App.MODE_GITHUBENTERPRISE);
+			mxUtils.write(gitHubOption, mxResources.get('githubenterprise'));
+			serviceSelect.appendChild(gitHubOption);
+			
+			addLogo(IMAGE_PATH + '/github-logo-rea.png', mxResources.get('githubenterprise'), App.MODE_GITHUBENTERPRISE, 'gitHubEnterprise');
+		}
+
 		if (typeof window.DropboxClient === 'function')
 		{
 			var dropboxOption = document.createElement('option');
@@ -3343,6 +3383,10 @@ var CreateDialog = function(editorUi, title, createFn, cancelFn, dlgTitle, btnLa
 				else if (newMode == App.MODE_GITHUB)
 				{
 					ext = editorUi.gitHub.extension;
+				}
+				else if (newMode == App.MODE_GITHUBENTERPRISE)
+				{
+					ext = editorUi.gitHubEnterprise.extension;
 				}
 				else if (newMode == App.MODE_TRELLO)
 				{

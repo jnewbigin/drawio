@@ -304,6 +304,7 @@ fullscreen=Fullscreen
 gap=Gap
 general=General
 github=GitHub
+githubenterprise=Git Hub Enterprise
 gliffy=Gliffy
 global=Global
 googleDocs=Google Docs

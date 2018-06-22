@@ -103,6 +103,16 @@
   </servlet-mapping>
   <servlet>
     <description/>
+    <display-name>GitHubEnterpriseServlet</display-name>
+    <servlet-name>GitHubEnterpriseServlet</servlet-name>
+    <servlet-class>com.mxgraph.online.GitHubEnterpriseServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GitHubEnterpriseServlet</servlet-name>
+    <url-pattern>/githubenterprise</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description/>
     <display-name>EmailServlet</display-name>
     <servlet-name>EmailServlet</servlet-name>
     <servlet-class>com.mxgraph.online.EmailServlet</servlet-class>

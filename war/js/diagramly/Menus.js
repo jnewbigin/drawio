@@ -2133,6 +2133,14 @@
 				}, parent);
 			}
 			
+			if (editorUi.gitHubEnterprise != null)
+			{
+				menu.addItem(mxResources.get('githubenterprise') + '...', null, function()
+				{
+					editorUi.pickFile(App.MODE_GITHUBENTERPRISE);
+				}, parent);
+			}
+			
 			if (editorUi.dropbox != null)
 			{
 				menu.addItem(mxResources.get('dropbox') + '...', null, function()
@@ -2252,6 +2260,14 @@
 				}, parent);
 			}
 			
+			if (editorUi.gitHubEnterprise != null)
+			{
+				menu.addItem(mxResources.get('githubenterprise') + '...', null, function()
+				{
+					editorUi.showLibraryDialog(null, null, null, null, App.MODE_GITHUBENTERPRISE);
+				}, parent);
+			}
+			
 			if (editorUi.dropbox != null)
 			{
 				menu.addItem(mxResources.get('dropbox') + '...', null, function()
@@ -2341,6 +2357,14 @@
 				menu.addItem(mxResources.get('github') + '...', null, function()
 				{
 					editorUi.pickLibrary(App.MODE_GITHUB);
+				}, parent);
+			}
+
+			if (editorUi.gitHubEnterprise != null)
+			{
+				menu.addItem(mxResources.get('githubenterprise') + '...', null, function()
+				{
+					editorUi.pickLibrary(App.MODE_GITHUBENTERPRISE);
 				}, parent);
 			}
 			
