@@ -129,7 +129,7 @@ GitHubEnterpriseClient.prototype.authenticate = function(success, error)
 										error({code: App.ERROR_TIMEOUT, retry: fn});
 									}), this.ui.timeout);
 									
-									mxUtils.get('/draw/githubenterprise?client_id=' + this.clientId + '&code=' + code, mxUtils.bind(this, function(authReq)
+									mxUtils.get('/githubenterprise?client_id=' + this.clientId + '&code=' + code, mxUtils.bind(this, function(authReq)
 									{
 										window.clearTimeout(timeoutThread);
 										

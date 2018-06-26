@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This script builds the docker container.
+
+# build.sh runs inside the container to set it up
+
+VERSION=$(< ../../../version)
+#(cd .. && ant war)
+cp ../../../build/draw.war ROOT.war
+docker build -f Dockerfile-small -t draw.io .
+docker tag draw.io registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
+docker push registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
