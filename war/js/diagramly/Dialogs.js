@@ -299,7 +299,7 @@ var StorageDialog = function(editorUi, fn, rowLimit)
 
 	if (editorUi.gitHubEnterprise != null)
 	{
-		addLogo(IMAGE_PATH + '/github-logo.svg', mxResources.get('githubenterprise'), App.MODE_GITHUBENTERPRISE, 'gitHubEnterprise');
+		addLogo(IMAGE_PATH + '/github-logo-rea.png', mxResources.get('githubenterprise'), App.MODE_GITHUBENTERPRISE, 'gitHubEnterprise');
 	}
 	
 	if (isLocalStorage && (urlParams['browser'] == '1' || urlParams['offline'] == '1'))
@@ -6041,6 +6041,11 @@ var AuthDialog = function(editorUi, peer, showRememberOption, fn)
 	{
 		service = mxResources.get('github');
 		img.src = IMAGE_PATH + '/github-logo-white.svg';
+	}
+	else if (peer == editorUi.gitHubEnterprise)
+	{
+		service = mxResources.get('githubenterprise');
+		img.src = IMAGE_PATH + '/github-logo-rea-small.png';
 	}
 	else if (peer == editorUi.trello)
 	{
