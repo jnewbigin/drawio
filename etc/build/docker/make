@@ -9,4 +9,10 @@ VERSION=$(< ../../../version)
 cp ../../../build/draw.war ROOT.war
 docker build -f Dockerfile-small -t draw.io .
 docker tag draw.io registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
+
+if [ "$1" == "test" ] ; then
+docker run -ti --rm -p 8080:8080 registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
+else
 docker push registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
+fi
+
