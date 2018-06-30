@@ -417,7 +417,7 @@ var StorageDialog = function(editorUi, fn, rowLimit)
 	});
 
 	// Checks if Google Drive is missing after a 5 sec delay
-	if (mxClient.IS_SVG && isLocalStorage && urlParams['gapi'] != '0' &&
+	if (false && mxClient.IS_SVG && isLocalStorage && urlParams['gapi'] != '0' &&
 		(document.documentMode == null || document.documentMode >= 10))
 	{
 		window.setTimeout(function()
