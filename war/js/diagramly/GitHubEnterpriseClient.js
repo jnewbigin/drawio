@@ -128,8 +128,17 @@ GitHubEnterpriseClient.prototype.authenticate = function(success, error)
 										acceptResponse = false;
 										error({code: App.ERROR_TIMEOUT, retry: fn});
 									}), this.ui.timeout);
+
+									if(location.protocol == "https:")
+									{
+										var url = "/githubenterprise";
+									}
+									else
+									{
+										var url = "/draw/githubenterprise";
+									}
 									
-									mxUtils.get('/githubenterprise?client_id=' + this.clientId + '&code=' + code, mxUtils.bind(this, function(authReq)
+									mxUtils.get(url + '?client_id=' + this.clientId + '&code=' + code, mxUtils.bind(this, function(authReq)
 									{
 										window.clearTimeout(timeoutThread);
 										
