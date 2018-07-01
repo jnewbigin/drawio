@@ -305,13 +305,13 @@
 				<file name="DrawioUser.js" />
 				<file name="DriveRealtime.js" />
 				<file name="RealtimeMapping.js" />
-				<!-- <file name="DriveFile.js" /> -->
+				<file name="DriveFile.js" />
 				<!-- <file name="DriveLibrary.js" /> -->
 				<!-- <file name="DriveClient.js" /> -->
-				<!-- <file name="DropboxFile.js" /> -->
+				<file name="DropboxFile.js" />
 				<!-- <file name="DropboxLibrary.js" /> -->
 				<!-- <file name="DropboxClient.js" /> -->
-				<!-- <file name="OneDriveFile.js" /> -->
+				<file name="OneDriveFile.js" />
 				<!-- <file name="OneDriveLibrary.js" /> -->
 				<!-- <file name="OneDriveClient.js" /> -->
 				<!-- <file name="GitHubFile.js" /> -->
