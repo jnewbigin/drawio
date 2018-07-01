@@ -31,7 +31,6 @@ GitHubEnterpriseClient.prototype.extension = '.xml';
  * Base URL for API calls.
  */
 GitHubEnterpriseClient.prototype.baseUrl = 'https://api.git.realestate.com.au';
-GitHubEnterpriseClient.prototype.realBaseUrl = 'https://git.realestate.com.au';
 
 /**
  * Maximum file size of the GitHub REST API.
@@ -75,7 +74,7 @@ GitHubEnterpriseClient.prototype.updateUser = function(success, error, failOnAut
 			}
 			else if (userReq.getStatus() < 200 || userReq.getStatus() >= 300)
 			{
-				error({message: 'JN1' + mxResources.get('accessDenied')});
+				error({message: mxResources.get('accessDenied')});
 			}
 			else
 			{
@@ -131,10 +130,12 @@ GitHubEnterpriseClient.prototype.authenticate = function(success, error)
 
 									if(location.protocol == "https:")
 									{
+										// Assume we are published an a real server
 										var url = "/githubenterprise";
 									}
 									else
 									{
+										// Assume we are doing local testing
 										var url = "/draw/githubenterprise";
 									}
 									
@@ -148,7 +149,7 @@ GitHubEnterpriseClient.prototype.authenticate = function(success, error)
 											{
 												if (authReq.getStatus() < 200 || authReq.getStatus() >= 300)
 												{
-													error({message: 'JN2' + mxResources.get('cannotLogin')});
+													error({message: mxResources.get('cannotLogin')});
 												}
 												else
 												{
@@ -299,7 +300,7 @@ GitHubEnterpriseClient.prototype.executeRequest = function(req, success, error)
 				}
 				else
 				{
-					error({message: 'JN3' + mxResources.get('error') + ' ' + req.getStatus()});
+					error({message: mxResources.get('error') + ' ' + req.getStatus()});
 				}
 			}
 		}), error);
