@@ -5,7 +5,8 @@
 # build.sh runs inside the container to set it up
 
 VERSION=$(< ../../../version)
-#(cd .. && ant war)
+echo "Building version $VERSION container"
+(cd .. && ant war)
 cp ../../../build/draw.war ROOT.war
 docker build -f Dockerfile-small -t draw.io .
 docker tag draw.io registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
