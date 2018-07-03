@@ -1,4 +1,5 @@
 FROM tomcat:7-jre8-alpine
+COPY [ "shush", "/usr/local/bin/shush" ]
 RUN ["rm", "-rf", "/usr/local/tomcat/webapps/ROOT"]
 COPY [ "ROOT.war", "/usr/local/tomcat/webapps/ROOT.war" ]
-
+ENTRYPOINT ["/usr/local/bin/shush", "exec", "catalina.sh", "run" ]

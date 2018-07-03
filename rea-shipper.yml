@@ -8,6 +8,9 @@ app:
   image: <(var.registry)>/<(var.team)>/draw.io:<(var.app_version)>
   ports: 
     - "8080:8080"
+  environment:
+    CLIENT_URL: 'https://git.realestate.com.au/login/oauth/access_token'
+    KMS_ENCRYPTED_CLIENT_SECRET: 'AQICAHgByKVTufNQVdpIELtHsZJtTPJhS6YWCiDD0FQgj9i/SgGbp79Lzhk/fnF4vj3s3de9AAAAhzCBhAYJKoZIhvcNAQcGoHcwdQIBADBwBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDEgR40TcetwtdcodhQIBEIBDwSyCS2y47L1U7SiX+oW/KiMhFL6x+L8ERptapxD3jnrfctv+9Yu1rboqssU+dnJ1MrSaFnsLVNmbyogZEQZfeITf9g=='
   health_check:
     protocol: http
     port: 8080
@@ -59,6 +62,8 @@ aws:
   #        - ok
   #      notify:
   #        - https://events.pagerduty.com/integration/XX768a7d06871f47f283fd40cdc1b1203c/enqueue
+  kms:
+    key: "arn:aws:kms:ap-southeast-2:351016140122:key/0fc418c5-8c3d-4f02-aa39-0a9805a6714e"
   vpc: vpc-e958a48c
   route53:
     zone: skynet.realestate.com.au

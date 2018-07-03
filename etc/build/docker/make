@@ -7,12 +7,18 @@
 VERSION=$(< ../../../version)
 echo "Building version $VERSION container"
 (cd .. && ant war)
+if [ ! -f shush ] ; then
+curl -sL -o shush \
+	    https://github.com/realestate-com-au/shush/releases/download/v1.3.1/shush_linux_amd64 \
+	    && chmod +x shush
+fi
+
 cp ../../../build/draw.war ROOT.war
 docker build -f Dockerfile-small -t draw.io .
 docker tag draw.io registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
 
 if [ "$1" == "test" ] ; then
-docker run -ti --rm -p 8080:8080 registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
+echo docker run -ti --rm -e CLIENT_URL -e KMS_ENCRYPTED_CLIENT_SECRET -e AWS_DEFAULT_REGION -p 8000:8080 registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
 else
 docker push registry.cowbell.realestate.com.au/skynet/draw.io:$VERSION
 fi
